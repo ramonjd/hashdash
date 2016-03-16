@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import eth from './eth'
+import polo from './polo'
 
 const hashdashApp = combineReducers({
-  eth
+  polo
 })
 
 export default hashdashApp

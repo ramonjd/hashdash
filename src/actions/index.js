@@ -1,41 +1,33 @@
+import * as constants from '../constants/'
+import axios from 'axios'
+
 // https://xgrommx.github.io/rx-book/why_rx.html
-function scheduleRequest() {
+function poloRequest() {
     return {
-        type: actionTypes.SCHEDULE_REQUEST
+        type: actionTypes.POLO_REQUEST
     }
 }
 
-function scheduleSuccess(data) {
+function poloSuccess(data) {
     return {
-        type: actionTypes.SCHEDULE_SUCCESS,
+        type: actionTypes.POLO_SUCCESS,
         data
     }
 }
 
-function scheduleFailure() {
+function poloFailure() {
     return {
-        type: actionTypes.SCHEDULE_FAILURE
+        type: actionTypes.POLO_FAILURE
     }
 }
 
-export function createSchedule(data) {
+export function get(query) {
     return (dispatch) => {
-        dispatch(scheduleRequest())
-        return axios.post(api.SCHEDULES_URL, data).then((response) => {
-            dispatch(scheduleSuccess(response.data))
+        dispatch(poloRequest())
+        return axios.get('https://poloniex.com/public?command=returnTicker').then((response) => {
+            dispatch(poloSuccess(response.data))
         }).catch((response) => {
-            dispatch(scheduleFailure(response))
-        })
-    }
-}
-
-export function clearSchedule() {
-    return (dispatch) => {
-        dispatch(scheduleRequest())
-        return axios.post(api.SCHEDULES_URL, data).then((response) => {
-            dispatch(scheduleSuccess(response.data))
-        }).catch((response) => {
-            dispatch(scheduleFailure(response))
+            dispatch(poloFailure(response))
         })
     }
 }

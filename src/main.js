@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import configureStore from './stores/configureStore'
 import App from './containers/App'
 const store = configureStore()
-const ROOT_ELEM = document.body
+const ROOT_ELEM = document.querySelector('main')
 
 render(
     <Provider store={store}>

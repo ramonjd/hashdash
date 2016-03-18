@@ -2,14 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions  from '../actions/'
-import Ethereum from './components/Ethereum'
+import Polo from '../components/Polo'
 
 
 function mapStateToProps(state) {
-    const { search, jobs, player } = state
-
+    const { polo } = state
     return {
-        jobs : jobs.jobs
+        polo : polo
     }
 }
 
@@ -33,10 +32,10 @@ export default class App extends Component {
     }
 
     render() {
-
+        const {polo, actions} = this.props
         return (
             <div>
-              <Ethereum />
+              <Polo polo={polo} actions={actions} />
             </div>
         )
     }

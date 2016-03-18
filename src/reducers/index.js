@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
 import polo from './polo'
 
-const hashdashApp = combineReducers({
+const rootReducer = combineReducers({
   polo
 })
 
-export default hashdashApp
+export default rootReducer

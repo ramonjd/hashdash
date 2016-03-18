@@ -1,57 +1,54 @@
 import * as constants from '../constants/'
 import axios from 'axios'
 import Rx from 'rx'
+//import Rx from 'rx-dom'
+let requestStream = null
+let responseStream = null
 
 // https://xgrommx.github.io/rx-book/why_rx.html
 function poloRequest() {
     return {
-        type: actionTypes.POLO_REQUEST
+        type: constants.POLO_REQUEST
     }
 }
 
 function poloSuccess(data) {
     return {
-        type: actionTypes.POLO_SUCCESS,
+        type: constants.POLO_SUCCESS,
         data
     }
 }
 
 function poloFailure() {
     return {
-        type: actionTypes.POLO_FAILURE
+        type: constants.POLO_FAILURE
     }
 }
 
-export function subscribe(query) {
+export function subscribe() {
     return (dispatch) => {
         dispatch(poloRequest())
 
-        let requestStream = Rx.Observable.just('https://api.github.com/users');
+        requestStream = Rx.Observable.interval( 5000 )
 
-var responseStream = requestStream
-  .flatMap(function(requestUrl) {
-    return Rx.Observable.fromPromise(jQuery.getJSON(requestUrl));
-  });
-
-responseStream.subscribe(function(response) {
-  // render `response` to the DOM however you wish
-});
-
-        // return axios.get('https://poloniex.com/public?command=returnTicker').then((response) => {
-        //     dispatch(poloSuccess(response.data))
-        // }).catch((response) => {
-        //     dispatch(poloFailure(response))
-        // })
-    }
-}
-
-export function unsubscribe(query) {
-    return (dispatch) => {
-        dispatch(poloRequest())
-        return axios.get('https://poloniex.com/public?command=returnTicker').then((response) => {
+        responseStream = requestStream
+          .flatMap(() => {
+            return Rx.Observable.fromPromise(axios.get('https://poloniex.com/public?command=returnTicker'))
+          })
+        responseStream.subscribe(function(response) {
             dispatch(poloSuccess(response.data))
-        }).catch((response) => {
-            dispatch(poloFailure(response))
         })
+
     }
 }
+
+// export function unsubscribe(query) {
+//     return (dispatch) => {
+//         dispatch(poloRequest())
+//         return axios.get('https://poloniex.com/public?command=returnTicker').then((response) => {
+//             dispatch(poloSuccess(response.data))
+//         }).catch((response) => {
+//             dispatch(poloFailure(response))
+//         })
+//     }
+// }

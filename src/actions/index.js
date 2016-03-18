@@ -35,9 +35,12 @@ export function subscribe() {
           .flatMap(() => {
             return Rx.Observable.fromPromise(axios.get('https://poloniex.com/public?command=returnTicker'))
           })
-        responseStream.subscribe(function(response) {
-            dispatch(poloSuccess(response.data))
-        })
+
+        responseStream.subscribe(
+          response => dispatch(poloSuccess(response.data)),
+          () => dispatch(poloFailure()),
+          () => console.log('onCompleted'))
+        )
 
     }
 }

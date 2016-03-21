@@ -25,6 +25,8 @@ function poloFailure() {
     }
 }
 
+
+
 export function subscribe() {
     return (dispatch) => {
         dispatch(poloRequest())
@@ -32,26 +34,21 @@ export function subscribe() {
         requestStream = Rx.Observable.interval( 5000 )
 
         responseStream = requestStream
-          .flatMap(() => {
+          .flatMapLatest(() => {
             return Rx.Observable.fromPromise(axios.get('https://poloniex.com/public?command=returnTicker'))
           })
+
 
         responseStream.subscribe(
           response => dispatch(poloSuccess(response.data)),
           () => dispatch(poloFailure()),
-          () => console.log('onCompleted'))
+          () => console.log('onCompleted')
         )
-
     }
 }
 
-// export function unsubscribe(query) {
-//     return (dispatch) => {
-//         dispatch(poloRequest())
-//         return axios.get('https://poloniex.com/public?command=returnTicker').then((response) => {
-//             dispatch(poloSuccess(response.data))
-//         }).catch((response) => {
-//             dispatch(poloFailure(response))
-//         })
-//     }
-// }
+export function unsubscribe(query) {
+    return (dispatch) => {
+        responseStream.dispose()
+    }
+}

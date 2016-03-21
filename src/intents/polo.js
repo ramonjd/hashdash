@@ -1,18 +1,17 @@
 import Rx from 'rx'
-import axios from 'axios'
 // https://github.com/Cmdv/React-RxJS/blob/master/src/intent/json-intent.js
 // ::obj.method     ≡ obj.method.bind(obj)
+import * as constants from '../constants/'
 
-
-var poloSubjects = {
-  getFeed: new Rx.Subject()
-}
-
-var requestPolo = () => {
-  return Rx.Observable.fromPromise(axios.get('https://poloniex.com/public?command=returnTicker')
+let subjects = {
+  getPoloDataSubject : new Rx.ReplaySubject(1)
 }
 
 export default {
-  poloSubjects,
-  get: () =>  requestPolo.subscribe(::poloSubjects.getFeed.onNext)
+  subjects,
+  getPoloData: () => {
+    subjects.getPoloDataSubject.onNext({
+      type: constants.POLO_REQUEST
+    })
+  }
 }

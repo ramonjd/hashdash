@@ -15,7 +15,12 @@ https://github.com/reactjs/reselect
 http://redux.js.org/docs/advanced/AsyncActions.html
 https://d3js.org/
 
+## react rx.js only
+https://medium.com/@garychambers108/functional-reactive-react-js-b04a8d97a540#.bm4rs3y6y
+https://github.com/Cmdv/React-RxJS
+
 ## see
+http://qiita.com/kimagure/items/22cf4bb2a967fcba376e
 http://jsfiddle.net/staltz/8jFJH/48/
 http://codepen.io/HugoCrd/pen/azGxdW
 https://speakerdeck.com/hugocrd/dealing-with-streams-using-rxjs

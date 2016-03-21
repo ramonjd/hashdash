@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import PoloIntent from '../intents/polo'
+import Rx from 'rx'
 
 export default class Polo extends Component {
 
@@ -9,25 +11,32 @@ export default class Polo extends Component {
     };
     constructor(props) {
         super(props)
+        this.intervalStream = null
     }
 
     componentWillMount() {
-        const {actions} = this.props
-        actions.subscribe()
+    }
+
+    componentWillUnmount() {
+      this.intervalStream.dispose()
+    }
+
+    componentDidMount() {
+      PoloIntent.getPoloData()
+      this.intervalStream = Rx.Observable.interval(2500)
+      this.intervalStream.subscribe(() => PoloIntent.getPoloData())
     }
 
     createNode(currencyPairObject) {
-        console.log(Object.keys(currencyPairObject))
         return (<p>{currencyPairObject.last}</p>)
     }
 
     render() {
-      const {polo} = this.props
-      const lastUpdated = polo.lastUpdated ? polo.lastUpdated.toLocaleDateString() : ''
+      const {poloData, lastUpdated} = this.props
         return (
             <div className="Polo">
-              <h2>Polo <time dateTime="{lastUpdated}">{lastUpdated}</time></h2>
-              {polo.data.BTC_ETH ? this.createNode(polo.data.BTC_ETH) : null}
+              <h2>Polo <time dateTime="{lastUpdated}">{lastUpdated ? lastUpdated.toLocaleDateString() : ''}</time></h2>
+              {poloData && poloData.BTC_ETH ? this.createNode(poloData.BTC_ETH) : null}
             </div>
         )
     }

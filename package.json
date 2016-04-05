@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build" : "./node_modules/.bin/webpack -p ./src/main.js",
     "start": "./node_modules/.bin/webpack-dev-server --hot --inline"
   },
   "keywords": [],
